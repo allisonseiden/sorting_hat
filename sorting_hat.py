@@ -226,7 +226,7 @@ def main():
     parser.add_argument("-r", "--repeat", help="Location of RepeatMasker file " +
                         "downloaded from UCSC Genome Browser. Refer to docs " +
                         "to see how to download RepeatMasker.", required=True);
-    parser.add_argument("-o", "--output", type=string, help="Name of output file, if not " +
+    parser.add_argument("-o", "--output", help="Name of output file, if not " +
                         "chosen then will print to stdout.")
     args = parser.parse_args();
 
@@ -239,6 +239,8 @@ def main():
     ravenclaw.intersect_repeat();
     if args.output:
         ravenclaw.mod_bed.to_csv(path_or_buf=args.output, sep='\t', index=False);
+    else:
+        print(ravenclaw.mod_bed);
 
 if __name__ == '__main__':
     main();

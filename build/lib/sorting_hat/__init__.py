@@ -1,1 +1,0 @@
-name = "sorting_hat"

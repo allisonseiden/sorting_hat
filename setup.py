@@ -18,7 +18,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ),
     entry_points={
-        "console_scripts": ['sorting_hat=sorting_hat.sorting_hat:main']
+        "console_scripts": ['sorting_hat=sorting_hat.sorting_hat:main', 'sorting-hat=sorting-hat.sorting-hat:main', 'sortinghat=sortinghat.sortinghat:main']
         },
     install_requires=[
           'pandas', 'numpy'

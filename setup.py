@@ -1,6 +1,6 @@
 import setuptools
 
-with open("README.rst", "r") as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
@@ -18,7 +18,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ),
     entry_points={
-        "console_scripts": ['sorting_hat=sorting_hat.sorting_hat:main', 'sorting-hat=sorting-hat.sorting-hat:main']
+        "console_scripts": ['sorting_hat=sorting_hat.sorting_hat:main']
         },
     install_requires=[
           'pandas', 'numpy'

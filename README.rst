@@ -52,7 +52,9 @@ Sorts indels into mutational classes
 
 To download RepeatMasker from UCSC Genome Browser:
 
-.. image:: ucsc_screenshot.png
+.. image:: data/ucsc_screenshot.png
+
+.. image:: data/ucsc_screenshot_two.png
 
 
 .. _Python >=3.5.0: https://www.python.org/downloads/release/python-350/

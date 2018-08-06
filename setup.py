@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="sorting_hat",
-    version="0.0.2",
+    version="0.0.3",
     author="Allison Seiden",
     author_email="ahseiden@gmail.com",
     description="Sorts indels into mutational classes",

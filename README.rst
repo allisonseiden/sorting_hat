@@ -38,7 +38,6 @@ Usage
 
 Sorts indels into mutational classes
 
-  -h, --help            show this help message and exit
   -b BED, --bed BED     Location of BED file with all variants. Must be
                         formatted as Chrom/Start/End/Ref/Alt/PatientID.
   -f FASTA, --fasta FASTA

@@ -22,7 +22,7 @@ setuptools.setup(
         "console_scripts": ['sorting_hat=sorting_hat.sorting_hat:main']
         },
     install_requires=[
-          'pandas', 'bedtools', 'numpy'
+          'pandas', 'numpy'
     ],
     python_requires='>=3',
 )

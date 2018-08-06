@@ -10,7 +10,6 @@ setuptools.setup(
     author_email="ahseiden@gmail.com",
     description="Sorts indels into mutational classes",
     long_description=long_description,
-    long_description_content_type="text/markdown",
     url="https://github.com/allisonseiden/sorting_hat",
     packages=setuptools.find_packages(),
     classifiers=(

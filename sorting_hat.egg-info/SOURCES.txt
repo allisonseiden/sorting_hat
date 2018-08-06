@@ -1,0 +1,7 @@
+README.md
+setup.py
+sorting_hat/__init__.py
+sorting_hat.egg-info/PKG-INFO
+sorting_hat.egg-info/SOURCES.txt
+sorting_hat.egg-info/dependency_links.txt
+sorting_hat.egg-info/top_level.txt

@@ -31,6 +31,7 @@ Example run
                 --repeat repeat_masker.txt
 
 Usage
+
 .. code-block::
 
     sorting_hat [-h] -b BED -f FASTA -r REPEAT [-o OUTPUT]

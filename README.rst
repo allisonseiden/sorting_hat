@@ -50,11 +50,8 @@ Sorts indels into mutational classes
                         Name of output file, if not chosen then will print to
                         stdout.
 
-To download RepeatMasker from UCSC Genome Browser:
-
-.. image:: data/ucsc_screenshot.png
-
-.. image:: data/ucsc_screenshot_two.png
+To download RepeatMasker from UCSC Genome Browser, see photos in 'data'
+folder on github: https://github.com/allisonseiden/sorting_hat
 
 Allison Seiden <ahseiden@gmail.com>
 

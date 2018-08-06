@@ -1,5 +1,6 @@
-sorting_hat
------------
+===========
+Sorting Hat
+===========
 
 Sorts indels into classes defined as follows:
   - homopolymer run (HR): mutation is in a region where there are 6 or more
@@ -14,13 +15,40 @@ In order to use sorting_hat, you must ensure the following are installed:
   - `bedtools >=2.27.0`_
 
 
+To install, use *pip*:
+
+.. code-block::
+
+    pip install sorting_hat
 
 
+Example run
 
+.. code-block:: bash
 
+    sorting_hat --bed test.bed \
+                --fasta test.fasta \
+                --repeat repeat_masker.txt
 
+Usage
+.. code-block::
 
+    sorting_hat [-h] -b BED -f FASTA -r REPEAT [-o OUTPUT]
 
+Sorts indels into mutational classes
+
+  -h, --help            show this help message and exit
+  -b BED, --bed BED     Location of BED file with all variants. Must be
+                        formatted as Chrom/Start/End/Ref/Alt/PatientID.
+  -f FASTA, --fasta FASTA
+                        Location of reference fasta file.
+  -r REPEAT, --repeat REPEAT
+                        Location of RepeatMasker file downloaded from UCSC
+                        Genome Browser. Refer to docs to see how to download
+                        RepeatMasker.
+  -o OUTPUT, --output OUTPUT
+                        Name of output file, if not chosen then will print to
+                        stdout.
 
 
 .. _Python >=3.5.0: https://www.python.org/downloads/release/python-350/

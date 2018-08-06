@@ -56,6 +56,8 @@ To download RepeatMasker from UCSC Genome Browser:
 
 .. image:: data/ucsc_screenshot_two.png
 
+Allison Seiden <ahseiden@gmail.com>
+
 
 .. _Python >=3.5.0: https://www.python.org/downloads/release/python-350/
 .. _bedtools >=2.27.0: http://bedtools.readthedocs.io/en/latest/

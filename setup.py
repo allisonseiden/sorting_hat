@@ -18,4 +18,11 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ),
+    entry_points={
+        "console_scripts": ['sorting_hat=sorting_hat.sorting_hat:main']
+        },
+    install_requires=[
+          'pandas', 'bedtools', 'numpy'
+    ],
+    python_requires='>=3',
 )

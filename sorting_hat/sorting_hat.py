@@ -114,7 +114,7 @@ class SortIt:
         self.mod_bed = self.mod_bed.join(fasta_df, how='left');
         self.mod_bed.reset_index(inplace=True);
         self.mod_bed['Sequence'] = self.mod_bed['Sequence'].str.upper();
-        #sp.call('rm tmp.bed fasta_tmp.bed', shell=True);
+        sp.call('rm tmp_one.bed fasta_tmp.bed', shell=True);
 
 
     """ Retrieves the bases adjacent to indel.
@@ -191,12 +191,6 @@ class SortIt:
 
 
     def intersect_repeat(self):
-        # reassign start and end columns to original locations
-        #self.mod_bed.sort_values(by=['ID']);
-        #self.indels_from_orig.sort_values(by=['ID']);
-        #self.mod_bed['Start'] = self.indels_from_orig['Start'].astype(int);
-        #self.mod_bed['End'] = self.indels_from_orig['End'].astype(int);
-
         self.mod_bed.to_csv(path_or_buf='tmp_two.bed', sep='\t', header=False,
                             index=False);
         cmd = 'bedtools intersect -a tmp_two.bed -b ' + self.repeat_masker;
@@ -208,7 +202,7 @@ class SortIt:
                                     'genoName', 'genoStart', 'genoEnd',
                                     'repName', 'repClass', 'repFamily']);
 
-        #sp.call('rm tmp.bed tmp_intersect.bed', shell=True);
+        sp.call('rm tmp_two.bed tmp_intersect.bed', shell=True);
         self.mod_bed.set_index(['Chrom', 'Start', 'End', 'Ref', 'Alt',
                                 'Allele', 'ID', 'Indel_Class'], inplace=True);
         repeat_df.set_index(['Chrom', 'Start', 'End', 'Ref', 'Alt',

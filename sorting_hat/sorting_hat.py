@@ -75,41 +75,46 @@ class SortIt:
     """
     def change_bounds(self):
         length = self.mod_bed.shape[0];
+        fasta_start = [];
+        fasta_end = [];
         for i in range(length):
             allele_len = len(self.mod_bed.loc[i, 'Allele']);
             # Insertions
             if len(self.mod_bed.loc[i, 'Ref']) < len(self.mod_bed.loc[i, 'Alt']):
                 if allele_len == 1:
-                    self.mod_bed.loc[i, 'Start'] -= 6;
-                    self.mod_bed.loc[i, 'End'] += 6;
+                    fasta_start.append(self.mod_bed.loc[i, 'Start'].astype(int) - 6);
+                    fasta_end.append(self.mod_bed.loc[i, 'End'].astype(int) + 6);
                 else:
-                    self.mod_bed.loc[i, 'Start'] -= 2*allele_len;
-                    self.mod_bed.loc[i, 'End'] += 2*allele_len;
+                    fasta_start.append(self.mod_bed.loc[i, 'Start'].astype(int) - (2*allele_len));
+                    fasta_end.append(self.mod_bed.loc[i, 'End'].astype(int) + (2*allele_len));
             # Deletions
             else:
                 if allele_len == 1:
-                    self.mod_bed.loc[i, 'Start'] -= 5;
-                    self.mod_bed.loc[i, 'End'] += 7;
+                    fasta_start.append(self.mod_bed.loc[i, 'Start'].astype(int) - 5);
+                    fasta_end.append(self.mod_bed.loc[i, 'End'].astype(int) + 7);
                 else:
-                    self.mod_bed.loc[i, 'Start'] -= (2*allele_len-1);
-                    self.mod_bed.loc[i, 'End'] += 3*allele_len;
+                    fasta_start.append(self.mod_bed.loc[i, 'Start'].astype(int) - (2*allele_len-1));
+                    fasta_end.append(self.mod_bed.loc[i, 'End'].astype(int) + (3*allele_len));
+        self.mod_bed['Fasta_Start'] = fasta_start;
+        self.mod_bed['Fasta_End'] = fasta_end;
 
     """ Uses bedtools getfasta to get sequence surrounding indel
     """
     def get_fasta(self):
-        self.mod_bed.to_csv(path_or_buf='tmp.bed', sep='\t', header=False,
+        self.mod_bed = self.mod_bed[['Chrom', 'Fasta_Start', 'Fasta_End', 'Ref', 'Alt', 'Allele', 'Start', 'End', 'ID']];
+        self.mod_bed.to_csv(path_or_buf='tmp_one.bed', sep='\t', header=False,
                             index=False);
-        cmd = 'bedtools getfasta -fi ' + self.fasta + ' -bed tmp.bed -fo ';
+        cmd = 'bedtools getfasta -fi ' + self.fasta + ' -bed tmp_one.bed -fo ';
         cmd += 'fasta_tmp.bed -tab';
         sp.call(cmd, shell=True);
         fasta_df = pd.read_table('fasta_tmp.bed', sep=':|-|\t', engine='python',
-                                    names=['Chrom', 'Start', 'End', 'Sequence']);
-        self.mod_bed.set_index(['Chrom', 'Start', 'End'], inplace=True);
-        fasta_df.set_index(['Chrom', 'Start', 'End'], inplace=True);
+                                    names=['Chrom', 'Fasta_Start', 'Fasta_End', 'Sequence']);
+        self.mod_bed.set_index(['Chrom', 'Fasta_Start', 'Fasta_End'], inplace=True);
+        fasta_df.set_index(['Chrom', 'Fasta_Start', 'Fasta_End'], inplace=True);
         self.mod_bed = self.mod_bed.join(fasta_df, how='left');
         self.mod_bed.reset_index(inplace=True);
         self.mod_bed['Sequence'] = self.mod_bed['Sequence'].str.upper();
-        sp.call('rm tmp.bed fasta_tmp.bed', shell=True);
+        #sp.call('rm tmp.bed fasta_tmp.bed', shell=True);
 
 
     """ Retrieves the bases adjacent to indel.
@@ -187,14 +192,14 @@ class SortIt:
 
     def intersect_repeat(self):
         # reassign start and end columns to original locations
-        self.mod_bed.sort_values(by=['ID']);
-        self.indels_from_orig.sort_values(by=['ID']);
-        self.mod_bed['Start'] = self.indels_from_orig['Start'].astype(int);
-        self.mod_bed['End'] = self.indels_from_orig['End'].astype(int);
+        #self.mod_bed.sort_values(by=['ID']);
+        #self.indels_from_orig.sort_values(by=['ID']);
+        #self.mod_bed['Start'] = self.indels_from_orig['Start'].astype(int);
+        #self.mod_bed['End'] = self.indels_from_orig['End'].astype(int);
 
-        self.mod_bed.to_csv(path_or_buf='tmp.bed', sep='\t', header=False,
+        self.mod_bed.to_csv(path_or_buf='tmp_two.bed', sep='\t', header=False,
                             index=False);
-        cmd = 'bedtools intersect -a tmp.bed -b ' + self.repeat_masker;
+        cmd = 'bedtools intersect -a tmp_two.bed -b ' + self.repeat_masker;
         cmd += ' -wb -loj > tmp_intersect.bed';
         sp.call(cmd, shell=True);
         repeat_df = pd.read_table('tmp_intersect.bed', sep='\t',
@@ -203,7 +208,7 @@ class SortIt:
                                     'genoName', 'genoStart', 'genoEnd',
                                     'repName', 'repClass', 'repFamily']);
 
-        sp.call('rm tmp.bed tmp_intersect.bed', shell=True);
+        #sp.call('rm tmp.bed tmp_intersect.bed', shell=True);
         self.mod_bed.set_index(['Chrom', 'Start', 'End', 'Ref', 'Alt',
                                 'Allele', 'ID', 'Indel_Class'], inplace=True);
         repeat_df.set_index(['Chrom', 'Start', 'End', 'Ref', 'Alt',
@@ -211,7 +216,7 @@ class SortIt:
         self.mod_bed = self.mod_bed.join(repeat_df, how='left');
         self.mod_bed.reset_index(inplace=True);
         self.mod_bed = self.mod_bed[['ID', 'Chrom','Start', 'End', 'Ref', 'Alt',
-                                        'Allele', 'Indel_Class' 'repName',
+                                        'Allele', 'Indel_Class', 'repName',
                                         'repClass', 'repFamily']];
 
 
